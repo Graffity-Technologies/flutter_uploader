@@ -117,6 +117,7 @@ class FlutterUploader {
         'path': upload.path,
         'headers': upload.headers,
         'tag': upload.tag,
+        'percentEncodedQuery': upload.percentEncodedQuery,
         'allowCellular': upload.allowCellular,
       }))!;
     }

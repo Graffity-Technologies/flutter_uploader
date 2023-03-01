@@ -155,6 +155,7 @@ public class SwiftFlutterUploaderPlugin: NSObject, FlutterPlugin {
 
         let headers = args["headers"] as? [String: Any?]
         let tag = args["tag"] as? String
+        let percentEncodedQuery = args["percentEncodedQuery"] as? String
 
         let httpMethod = method.uppercased()
 
@@ -185,7 +186,7 @@ public class SwiftFlutterUploaderPlugin: NSObject, FlutterPlugin {
             return
         }
 
-        binaryUploadTaskWithURLWithCompletion(url: url, file: fileUrl, method: method, headers: headers, tag: tag, allowCellular: allowCellular, completion: { (task, error) in
+        binaryUploadTaskWithURLWithCompletion(url: url, file: fileUrl, method: method, headers: headers, tag: tag, percentEncodedQuery: percentEncodedQuery, allowCellular: allowCellular, completion: { (task, error) in
             if error != nil {
                 result(error!)
             } else if let uploadTask = task {
@@ -214,9 +215,13 @@ public class SwiftFlutterUploaderPlugin: NSObject, FlutterPlugin {
                                                        method: String,
                                                        headers: [String: Any?]?,
                                                        tag: String?,
+                                                       percentEncodedQuery: String?,
                                                        allowCellular: Bool,
                                                        completion completionHandler:@escaping (URLSessionUploadTask?, FlutterError?) -> Void) {
-        let request = NSMutableURLRequest(url: url)
+        var urlComponents = URLComponents(string: url.absoluteString)!
+        urlComponents.percentEncodedQuery = percentEncodedQuery
+
+        var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = method
         request.setValue("*/*", forHTTPHeaderField: "Accept")
 

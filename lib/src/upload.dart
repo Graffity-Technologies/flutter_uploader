@@ -9,6 +9,7 @@ abstract class Upload {
     required this.method,
     this.headers = const <String, String>{},
     this.tag,
+    this.percentEncodedQuery,
     this.allowCellular = true,
   });
 
@@ -23,6 +24,9 @@ abstract class Upload {
 
   /// Name of the upload request (only used on Android)
   final String? tag;
+
+  /// Percent Encoded Query
+  final String? percentEncodedQuery;
 
   /// If uploads are allowed to use cellular connections
   /// Defaults to true. If false, uploads will only use wifi connections
@@ -69,6 +73,7 @@ class RawUpload extends Upload {
     UploadMethod method = UploadMethod.POST,
     Map<String, String>? headers,
     String? tag,
+    String? percentEncodedQuery,
     this.path,
     bool allowCellular = true,
   }) : super(
@@ -76,6 +81,7 @@ class RawUpload extends Upload {
           method: method,
           headers: headers,
           tag: tag,
+          percentEncodedQuery: percentEncodedQuery,
           allowCellular: allowCellular,
         );
 
